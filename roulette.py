@@ -14,5 +14,5 @@ aCircle.draw(win)
 #aLine.draw(win)
 for x in range(38):
     temp = (math.pi*x)/180
-    aLine = Line(Point(0,0), Point(90*math.cos(temp),90*math.sin(temp)))
+    aLine = Line(Point(0,0), Point(90*math.cos(temp*9.4736842105),90*math.sin(temp*9.4736842105)))
     aLine.draw(win)
