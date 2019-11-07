@@ -32,15 +32,16 @@ def createWheel():
     bigBlockCircle = Circle(Point(0,0), 55)
     bigBlockCircle.draw(wheel)
     bigBlockCircle.setFill("Dark Slate Gray")
-    blockCircle = Circle(Point(0,0), 45)
+    blockCircle = Circle(Point(0,0), 50)
     blockCircle.draw(wheel)
     blockCircle.setFill("maroon")
 createWheel()
 #############################################
 ### CREATE CONTROL WINDOW
 #############################################
-#otherWin = GraphWin("Bet Controls", 600, 300)
-#otherWin.setBackground("grey")
+otherWin = GraphWin("Bet Controls", 800, 400)
+otherWin.setBackground("grey")
+
 #############################################
 ### DRAW POINTS ON WHEEL
 #############################################
@@ -66,20 +67,22 @@ def spinBall():
     for i in range(1,spinCount):
         time.sleep(.05)
         ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
-        k = i
-    print(numberList.index[k])
-    #for x in range(5):
-    #    y = math.pi*x
-    #    y = y / 180
-    #    ball.move(-1*((math.cos(.08728408*y))*73),(-1*(math.sin(.08728408*y)))*73)
-    #    time.sleep(.300)
+    if spinCount+20 > 38:
+        k = spinCount
+        while k+20 > 38:
+            k = k - 38
+    slot0.setText(numberList[k+20])
+    ball.undraw()
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
 createWheel()
 createLabels()
-spinBall()
+
 slot0 = Text(Point(0,0), "make sure to eat your vegetables")
 slot0.setSize(22)
 slot0.setTextColor("orange")
 slot0.draw(wheel)
+while True:
+    click = otherWin.getMouse()
+    spinBall()
