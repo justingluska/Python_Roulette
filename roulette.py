@@ -21,13 +21,13 @@ def createWheel():
         temp2 = (math.pi*(x+1))/180
         aLine = Polygon(Point(0,0), Point(90*math.cos(temp*9.4736842105),90*math.sin(temp*9.4736842105)), Point(90*math.cos(temp2*9.4736842105),90*math.sin(temp2*9.4736842105)))
         if x == 9:
-            aLine.setFill("green")
+            aLine.setFill("Dark Green")
         elif x == 28:
-            aLine.setFill("green")
+            aLine.setFill("Dark Green")
         elif x%2 == 0:
             aLine.setFill("black")
         elif x%2 == 1:
-            aLine.setFill("red")
+            aLine.setFill("maroon")
         aLine.draw(wheel)
     bigBlockCircle = Circle(Point(0,0), 55)
     bigBlockCircle.draw(wheel)
@@ -88,12 +88,21 @@ splitter.draw(otherWin)
 #    line.draw(otherWin)
 a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
 b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
-c12 = []
+c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
+for i in range(3):
+    twoOne = Rectangle(Point(76.9230769231*12,700+(i*100)),Point(1000,800+(i*100)))
+    twoText = Text(Point(960,750+(i*100)), "2:1")
+    twoText.setFill("white")
+    twoText.setStyle("bold")
+    twoText.setSize(18)
+    twoOne.setFill("Slate Gray")
+    twoOne.draw(otherWin)
+    twoText.draw(otherWin)
 for i in range(13):
     aRectangle = Rectangle(Point(i*76.9,1000), Point((i+1)*76.9,900))
     aRectangle.draw(otherWin)
     if a12[i] == 3 or a12[i] == 9 or a12[i] == 12 or a12[i] == 18 or a12[i] == 21 or a12[i] == 27 or a12[i] == 30 or a12[i] == 36:
-        aRectangle.setFill("red")
+        aRectangle.setFill("maroon")
     elif a12[i] == 6 or a12[i] == 15 or a12[i] == 24 or a12[i] == 33:
         aRectangle.setFill("black")
 for i in range(13):
@@ -101,9 +110,15 @@ for i in range(13):
     aRectangle.draw(otherWin)
     if b12[i] == 2 or b12[i] == 8 or b12[i] == 11 or b12[i] == 17 or b12[i] == 20 or b12[i] == 26 or b12[i] == 29 or b12[i] == 35:
         aRectangle.setFill("black")
+    elif b12[i] == 5 or b12[i] == 14 or b12[i] == 23 or b12[i] == 32:
+        aRectangle.setFill("maroon")
 for i in range(13):
     aRectangle = Rectangle(Point(i*76.9,800), Point((i+1)*76.9,700))
     aRectangle.draw(otherWin)
+    if c12[i] == 1 or c12[i] == 7 or c12[i] == 16 or c12[i] == 19 or c12[i] == 25 or c12[i] == 34:
+        aRectangle.setFill("maroon")
+    elif c12[i] == 4 or c12[i] == 10 or c12[i] == 13 or c12[i] == 22 or c12[i] == 28 or c12[i] == 31:
+        aRectangle.setFill("black")
 aLine = Line(Point(923.076,700), Point(923.076,500))
 aLine.draw(otherWin)
 for i in range(1,4):
@@ -115,13 +130,24 @@ for i in range(1,9):
 aLine = Line(Point(0,600), Point(1000,600))
 aLine.draw(otherWin)
 #def drawBettingColors:
-def drawBettingNumbers:
-    for i in a12:
-        message = Text(Point((50+25*i)-77.5,950), i)
-        message.setFill("white")
-        message.setStyle("bold")
-        message.setSize(18)
-        message.draw(otherWin)
+for i in a12:
+    message = Text(Point((50+25*i)-77.5,950), i)
+    message.setFill("white")
+    message.setStyle("bold")
+    message.setSize(18)
+    message.draw(otherWin)
+for i in b12:
+    message = Text(Point((25*i),850), i)
+    message.setFill("white")
+    message.setStyle("bold")
+    message.setSize(18)
+    message.draw(otherWin)
+for i in c12:
+    message = Text(Point(22.5+(25*i),750), i)
+    message.setFill("white")
+    message.setStyle("bold")
+    message.setSize(18)
+    message.draw(otherWin)
 #def drawBettingMisc:
 #############################################    
 ##### PROGRAM RUN #####
@@ -129,7 +155,7 @@ def drawBettingNumbers:
 createWheel()
 createLabels()
 
-slot0 = Text(Point(0,0), "make sure to eat your vegetables")
+slot0 = Text(Point(0,0), "zixuan is the best <3")
 slot0.setSize(22)
 slot0.setTextColor("orange")
 slot0.draw(wheel)
