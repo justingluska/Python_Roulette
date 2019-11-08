@@ -61,12 +61,21 @@ def spinBall():
     ball = Circle(Point(63.4,5.5), 3)
     ball.setFill("orange")
     ball.draw(wheel)
-    spinCount = random.randrange(38,190)
+    spinCount = random.randrange(38,304)
     print(spinCount)
     k = 0
     final = 0
     for i in range(1,spinCount):
-        time.sleep(.05)
+        j = i/spinCount
+        if j >= .90:
+            time.sleep((j/3)/2)
+        elif j >= .80:
+            time.sleep((j/6)/2)
+        elif j >= .70:
+            time.sleep((j/12)/2)
+        elif j < 70:
+            time.sleep(.025)
+        
         ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
     if spinCount+20 > 38:
         k = spinCount
@@ -121,9 +130,33 @@ for i in range(13):
         aRectangle.setFill("black")
 aLine = Line(Point(923.076,700), Point(923.076,500))
 aLine.draw(otherWin)
-for i in range(1,4):
-    aLine = Line(Point(307.692*i, 700), Point(307.692*i, 600))
+for i in range(0,3):
+    aLine = Rectangle(Point(i*307.6923076924,600), Point((i+1)*307.6923076924,700))
+    aLine.setFill("Slate Grey")
     aLine.draw(otherWin)
+    if i == 0:
+        first12a = Text(Point(153.8461538462,650), "1st 12")
+        first12a.setStyle("bold")
+        first12a.setSize(18)
+        first12a.setFill("white")
+        first12a.draw(otherWin)
+    if i == 1:
+        first12b = Text(Point(153.8461538462*3,650), "2nd 12")
+        first12b.setStyle("bold")
+        first12b.setSize(18)
+        first12b.setFill("white")
+        first12b.draw(otherWin)
+    if i == 2:
+        first12c = Text(Point(153.8461538462*5,650), "3rd 12")
+        first12c.setStyle("bold")
+        first12c.setSize(18)
+        first12c.setFill("white")
+        first12c.draw(otherWin)
+### DRAW RECTANGLE OF NOTHINGNESS
+nothing = Rectangle(Point(923.0769230772,500), Point(1000,700))
+nothing.setFill("black")
+nothing.draw(otherWin)
+#########
 for i in range(1,9):
     aLine = Line(Point(115.3845*i,600), Point(115.3845*i, 500))
     aLine.draw(otherWin)
