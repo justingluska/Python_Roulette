@@ -39,9 +39,9 @@ createWheel()
 #############################################
 ### CREATE CONTROL WINDOW
 #############################################
-otherWin = GraphWin("Bet Controls", 800, 400)
-otherWin.setBackground("grey")
-
+otherWin = GraphWin("Bet Controls", 750, 750)
+otherWin.setBackground("Teal")
+otherWin.setCoords(0,0,1000,1000)
 #############################################
 ### DRAW POINTS ON WHEEL
 #############################################
@@ -72,7 +72,21 @@ def spinBall():
         while k+20 > 38:
             k = k - 38
     slot0.setText(numberList[k+20])
-    ball.undraw()
+    #ball.undraw()
+#############################################
+##### MAKE BETTING WHEEL
+#############################################
+splitter = Line(Point(0,500), Point(1000,500))
+splitter.draw(otherWin)
+#for i in range(13):
+#    line = Line(Point(i*76.9,1000), Point(i*76.9,500))
+#    line.draw(otherWin)
+#for i in range(5):
+#    line = Line(Point(0,500+(i*100)), Point(1000,500+(i*100)))
+#    line.draw(otherWin)
+for i in range(13):
+    aRectangle = Rectangle(Point(i*76.9,1000), Point((i+i)*76.9,900))
+    aRectangle.draw(otherWin)
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
