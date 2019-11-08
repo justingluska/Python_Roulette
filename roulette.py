@@ -85,8 +85,28 @@ splitter.draw(otherWin)
 #    line = Line(Point(0,500+(i*100)), Point(1000,500+(i*100)))
 #    line.draw(otherWin)
 for i in range(13):
-    aRectangle = Rectangle(Point(i*76.9,1000), Point((i+i)*76.9,900))
+    aRectangle = Rectangle(Point(i*76.9,1000), Point((i+1)*76.9,900))
     aRectangle.draw(otherWin)
+    if i%2 == 0:
+        aRectangle.setFill("red")
+    elif i%2 == 1:
+        aRectangle.setFill("grey")
+for i in range(13):
+    aRectangle = Rectangle(Point(i*76.9,900), Point((i+1)*76.9,800))
+    aRectangle.draw(otherWin)
+for i in range(13):
+    aRectangle = Rectangle(Point(i*76.9,800), Point((i+1)*76.9,700))
+    aRectangle.draw(otherWin)
+aLine = Line(Point(923.076,700), Point(923.076,500))
+aLine.draw(otherWin)
+for i in range(1,4):
+    aLine = Line(Point(307.692*i, 700), Point(307.692*i, 600))
+    aLine.draw(otherWin)
+for i in range(1,9):
+    aLine = Line(Point(115.3845*i,600), Point(115.3845*i, 500))
+    aLine.draw(otherWin)
+aLine = Line(Point(0,600), Point(1000,600))
+aLine.draw(otherWin)
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
