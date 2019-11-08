@@ -35,9 +35,10 @@ def createWheel():
     blockCircle = Circle(Point(0,0), 50)
     blockCircle.draw(wheel)
     blockCircle.setFill("maroon")
+###
 createWheel()
 #############################################
-### CREATE CONTROL WINDOW
+### CREATE BET CONTROL & COMMAND WINDOW
 #############################################
 otherWin = GraphWin("Bet Controls", 750, 750)
 otherWin.setBackground("Teal")
@@ -69,8 +70,9 @@ def spinBall():
         ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
     if spinCount+20 > 38:
         k = spinCount
-        while k+20 > 38:
+        while k+20 >= 38:
             k = k - 38
+    ball.setFill("Light Gray")
     slot0.setText(numberList[k+20])
     #ball.undraw()
 #############################################
@@ -84,16 +86,21 @@ splitter.draw(otherWin)
 #for i in range(5):
 #    line = Line(Point(0,500+(i*100)), Point(1000,500+(i*100)))
 #    line.draw(otherWin)
+a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
+b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
+c12 = []
 for i in range(13):
     aRectangle = Rectangle(Point(i*76.9,1000), Point((i+1)*76.9,900))
     aRectangle.draw(otherWin)
-    if i%2 == 0:
+    if a12[i] == 3 or a12[i] == 9 or a12[i] == 12 or a12[i] == 18 or a12[i] == 21 or a12[i] == 27 or a12[i] == 30 or a12[i] == 36:
         aRectangle.setFill("red")
-    elif i%2 == 1:
-        aRectangle.setFill("grey")
+    elif a12[i] == 6 or a12[i] == 15 or a12[i] == 24 or a12[i] == 33:
+        aRectangle.setFill("black")
 for i in range(13):
     aRectangle = Rectangle(Point(i*76.9,900), Point((i+1)*76.9,800))
     aRectangle.draw(otherWin)
+    if b12[i] == 2 or b12[i] == 8 or b12[i] == 11 or b12[i] == 17 or b12[i] == 20 or b12[i] == 26 or b12[i] == 29 or b12[i] == 35:
+        aRectangle.setFill("black")
 for i in range(13):
     aRectangle = Rectangle(Point(i*76.9,800), Point((i+1)*76.9,700))
     aRectangle.draw(otherWin)
@@ -107,6 +114,15 @@ for i in range(1,9):
     aLine.draw(otherWin)
 aLine = Line(Point(0,600), Point(1000,600))
 aLine.draw(otherWin)
+#def drawBettingColors:
+def drawBettingNumbers:
+    for i in a12:
+        message = Text(Point((50+25*i)-77.5,950), i)
+        message.setFill("white")
+        message.setStyle("bold")
+        message.setSize(18)
+        message.draw(otherWin)
+#def drawBettingMisc:
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
