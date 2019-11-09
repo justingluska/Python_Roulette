@@ -7,6 +7,56 @@ from graphics import *
 import math
 import time
 import random
+###############
+username = ""
+###############
+loginScreen = GraphWin("Login Screen", 400, 400)
+loginScreen.setCoords(0,0,400,300)
+loginScreen.setBackground("LightGrey")
+inputBox = Entry(Point(200,200), 15)
+inputBox.draw(loginScreen)
+confirmLogin = Rectangle(Point(100,50), Point(300,150))
+confirmLogin.setFill("Crimson")
+confirmLogin.draw(loginScreen)
+confirmLoginText = Text(Point(200,100), "LOGIN")
+confirmLoginText.setFill("white")
+confirmLoginText.setSize(26)
+confirmLoginText.draw(loginScreen)
+loginText = Text(Point(200,250), "Welcome To Roulette! Enter a username to get started!")
+loginText.setFill("crimson")
+loginText.setStyle("bold")
+loginText.setSize(12)
+loginText.draw(loginScreen)
+nameEnter = False
+while nameEnter == False:
+    loginClick = loginScreen.getMouse()
+    if loginClick.getX() >= 100 and loginClick.getX() <= 300:
+        if loginClick.getY() >= 50 and loginClick.getY() <= 150:
+            if len(inputBox.getText()) > 0:
+                username = inputBox.getText()
+                infile = open("playerinfo.txt", "r")
+                createNew = 0
+                for line in infile:
+                    while createNew == 0:        
+                        tempLine = str(line)
+                        if username in tempLine and createNew == 0:
+                            print(line.split(","))
+                            nameEnter = True
+                            loginScreen.close()
+                            break
+                        else:
+                            createNew = 1
+                            break
+                if createNew == 1:
+                    tempSet = username + ",1000"
+                    outfile = open("playerinfo.txt", "a")
+                    outfile.write("\n")
+                    outfile.write(tempSet)
+                    outfile.close()
+                    infile.close()
+                    nameEnter = True
+                    loginScreen.close()
+###############
 ### SET WHEEL WINDOW CONDITIONS
 wheel = GraphWin("Roulette Wheel", 750, 750)
 wheel.setCoords(-90, -90, 90, 90)
@@ -85,16 +135,11 @@ def spinBall():
     slot0.setText(numberList[k+20])
     #ball.undraw()
 #############################################
-##### MAKE BETTING WHEEL
+##### MAKE BETTING WINDOW
 #############################################
 splitter = Line(Point(0,500), Point(1000,500))
 splitter.draw(otherWin)
-#for i in range(13):
-#    line = Line(Point(i*76.9,1000), Point(i*76.9,500))
-#    line.draw(otherWin)
-#for i in range(5):
-#    line = Line(Point(0,500+(i*100)), Point(1000,500+(i*100)))
-#    line.draw(otherWin)
+#############################################
 a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
 b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
 c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
@@ -157,11 +202,81 @@ nothing = Rectangle(Point(923.0769230772,500), Point(1000,700))
 nothing.setFill("black")
 nothing.draw(otherWin)
 #########
-for i in range(1,9):
-    aLine = Line(Point(115.3845*i,600), Point(115.3845*i, 500))
-    aLine.draw(otherWin)
-aLine = Line(Point(0,600), Point(1000,600))
-aLine.draw(otherWin)
+def drawBottomRow():
+    bottomValues = ["1-18", "EVEN", "", "0", "00", "", "ODD", "19-36"]
+    for i in range(8):
+        bottomRow = Rectangle(Point(115.3846153847*i,500), Point(115.3846153847*(i+1),600))
+        bottomRow.draw(otherWin)
+        bottomRow.setFill("gray")
+    # pos1
+    bottomPos1 = Text(Point(57.6923076924,550), bottomValues[0])
+    bottomPos1.setFill("white")
+    bottomPos1.setStyle("bold")
+    bottomPos1.setSize(18)
+    bottomPos1.draw(otherWin)
+    # pos2
+    bottomPos2 = Text(Point(57.6923076924*3,550), bottomValues[1])
+    bottomPos2.setFill("white")
+    bottomPos2.setStyle("bold")
+    bottomPos2.setSize(18)
+    bottomPos2.draw(otherWin)
+    # pos3
+    bottomPos3 = Rectangle(Point(115.3846153847*2,500), Point(115.3846153847*(2+1),600))
+    bottomPos3.setFill("black")
+    bottomPos3.draw(otherWin)
+    # pos4
+    bottomPos4 = Text(Point(57.6923076924*7,550), bottomValues[3])
+    bottomPos4.setFill("white")
+    bottomPos4.setStyle("bold")
+    bottomPos4.setSize(18)
+    bottomPos4.draw(otherWin)
+    # pos5
+    bottomPos5 = Text(Point(57.6923076924*9,550), bottomValues[4])
+    bottomPos5.setFill("white")
+    bottomPos5.setStyle("bold")
+    bottomPos5.setSize(18)
+    bottomPos5.draw(otherWin)
+    # pos6
+    bottomPos6 = Rectangle(Point(115.3846153847*5,500), Point(115.3846153847*(5+1),600))
+    bottomPos6.setFill("maroon")
+    bottomPos6.draw(otherWin)
+    # pos7
+    bottomPos7 = Text(Point(57.6923076924*13,550), bottomValues[6])
+    bottomPos7.setFill("white")
+    bottomPos7.setStyle("bold")
+    bottomPos7.setSize(18)
+    bottomPos7.draw(otherWin)
+    # pos8
+    bottomPos8 = Text(Point(57.6923076924*15,550), bottomValues[7])
+    bottomPos8.setFill("white")
+    bottomPos8.setStyle("bold")
+    bottomPos8.setSize(18)
+    bottomPos8.draw(otherWin)
+drawBottomRow()
+#####
+def createUserControls():
+    # Behind Shadow
+    spinButtonShadow = Rectangle(Point(258,67), Point(758,267))
+    spinButtonShadow.setFill("Black")
+    spinButtonShadow.draw(otherWin)
+    # Front Facing Button
+    spinButton = Rectangle(Point(250,75), Point(750,275))
+    spinButton.setFill("Crimson")
+    spinButton.draw(otherWin)
+    # Front Facing Button Text
+    spinButtonText = Text(Point(500,175), "SPIN!")
+    spinButtonText.draw(otherWin)
+    spinButtonText.setFill("White")
+    spinButtonText.setStyle("bold")
+    spinButtonText.setSize(36)
+    # Betting Extry Box
+    betBox = Entry(Point(500,400), 15)
+    betBox.draw(otherWin)
+    # Username Display
+    usernameDisplay = Text(Point(500,40), "Logged In As: " + username.upper())
+    usernameDisplay.draw(otherWin)
+createUserControls()
+#####
 #def drawBettingColors:
 for i in a12:
     message = Text(Point((50+25*i)-77.5,950), i)
@@ -192,6 +307,11 @@ slot0 = Text(Point(0,0), "zixuan is the best <3")
 slot0.setSize(22)
 slot0.setTextColor("orange")
 slot0.draw(wheel)
+
 while True:
     click = otherWin.getMouse()
-    spinBall()
+    x = click.getX()
+    y = click.getY()
+    if x >= 250 and x <= 750:
+        if y >= 75 and y <= 275:
+            spinBall()
