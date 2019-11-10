@@ -9,7 +9,11 @@ import time
 import random
 ###############
 username = ""
+money = 0
 ###############
+console = Text(Point(0,0), "Welcome to Roulette!")
+console.setSize(22)
+console.setTextColor("orange")
 loginScreen = GraphWin("Login Screen", 400, 400)
 loginScreen.setCoords(0,0,400,300)
 loginScreen.setBackground("LightGrey")
@@ -26,6 +30,7 @@ loginText = Text(Point(200,250), "Welcome To Roulette! Enter a username to get s
 loginText.setFill("crimson")
 loginText.setStyle("bold")
 loginText.setSize(12)
+betBox = Entry(Point(500,435), 15)
 loginText.draw(loginScreen)
 nameEnter = False
 while nameEnter == False:
@@ -37,10 +42,11 @@ while nameEnter == False:
                 infile = open("playerinfo.txt", "r")
                 createNew = 0
                 for line in infile:
-                    while createNew == 0:        
+                    if createNew == 0:        
                         tempLine = str(line)
                         if username in tempLine and createNew == 0:
-                            print(line.split(","))
+                            money = line.split(",")
+                            money = int(money[1])
                             nameEnter = True
                             loginScreen.close()
                             break
@@ -49,6 +55,7 @@ while nameEnter == False:
                             break
                 if createNew == 1:
                     tempSet = username + ",1000"
+                    money = 1000
                     outfile = open("playerinfo.txt", "a")
                     outfile.write("\n")
                     outfile.write(tempSet)
@@ -107,33 +114,57 @@ def createLabels():
 #############################################
 ##### CREATE BALL ON GREEN 0
 #############################################
+##### DISPLAY AMOUNT OF MONEY USER HAS ######
+moneyLabel = Text(Point(500,370), "You Have: $")
+moneyDisplay = Text(Point(500,300), money)
+def displayInitialMoney():
+    moneyLabel.setStyle("bold")
+    moneyLabel.setFill("white")
+    moneyLabel.draw(otherWin)
+    moneyDisplay.setFill("white")
+    moneyDisplay.setStyle("bold")
+    moneyDisplay.setSize(36)
+    moneyDisplay.draw(otherWin)
+def updateMoney():
+    moneyDisplay.setText(money)
+#############################################    
 def spinBall():
-    ball = Circle(Point(63.4,5.5), 3)
-    ball.setFill("orange")
-    ball.draw(wheel)
-    spinCount = random.randrange(38,304)
-    print(spinCount)
-    k = 0
-    final = 0
-    for i in range(1,spinCount):
-        j = i/spinCount
-        if j >= .90:
-            time.sleep((j/3)/2)
-        elif j >= .80:
-            time.sleep((j/6)/2)
-        elif j >= .70:
-            time.sleep((j/12)/2)
-        elif j < 70:
-            time.sleep(.025)
-        
-        ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
-    if spinCount+20 > 38:
-        k = spinCount
-        while k+20 >= 38:
-            k = k - 38
-    ball.setFill("Light Gray")
-    slot0.setText(numberList[k+20])
-    #ball.undraw()
+    betAmount = int(betBox.getText())
+    global money
+    if betAmount <= money:
+        money = money - betAmount
+        moneyDisplay.setText(money)
+        ball = Circle(Point(63.4,5.5), 3)
+        ball.setFill("orange")
+        ball.draw(wheel)
+        spinCount = random.randrange(38,380)
+        print(spinCount)
+        k = 0
+        final = 0
+        for i in range(1,spinCount):
+            j = i/spinCount
+            if j >= .95:
+                time.sleep((j/1.5)/2)
+            elif j >= .90:
+                time.sleep((j/3)/2)
+            elif j >= .80:
+                time.sleep((j/6)/2)
+            elif j >= .70:
+                time.sleep((j/12)/2)
+            elif j < 70:
+                time.sleep(.025)
+            elif j < 40:
+                time.sleep(.010)
+            ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
+        if spinCount+20 > 38:
+            k = spinCount
+            while k+20 >= 38:
+                k = k - 38
+        ball.setFill("Light Gray")
+        console.setText(numberList[k+20])
+        #ball.undraw()
+    elif betAmount > money:
+        console.setText("Error! You can't bet more than you have")
 #############################################
 ##### MAKE BETTING WINDOW
 #############################################
@@ -270,7 +301,10 @@ def createUserControls():
     spinButtonText.setStyle("bold")
     spinButtonText.setSize(36)
     # Betting Extry Box
-    betBox = Entry(Point(500,400), 15)
+    betBoxLabel = Text(Point(370,435), "Enter Bet $:")
+    betBoxLabel.setStyle("bold")
+    betBoxLabel.setFill("white")
+    betBoxLabel.draw(otherWin)
     betBox.draw(otherWin)
     # Username Display
     usernameDisplay = Text(Point(500,40), "Logged In As: " + username.upper())
@@ -297,16 +331,16 @@ for i in c12:
     message.setSize(18)
     message.draw(otherWin)
 #def drawBettingMisc:
+    
+def awardPLayer():
+    print()
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
 createWheel()
 createLabels()
-
-slot0 = Text(Point(0,0), "zixuan is the best <3")
-slot0.setSize(22)
-slot0.setTextColor("orange")
-slot0.draw(wheel)
+displayInitialMoney()
+console.draw(wheel)
 
 while True:
     click = otherWin.getMouse()
