@@ -1,68 +1,83 @@
 # JUSTIN GLUSKA
-# ECS102 FINAL PROJECT
-# ROULETTE GAME
+# ECS102 Final
+# Section M5
+# Due December 5th, 2019
+# Roulette Board Game
 
 ### IMPORT GRAPHICS AND MATH
 from graphics import *
 import math
 import time
 import random
+############################
+
 ###############
 username = ""
 money = 0
 ###############
-console = Text(Point(0,0), "Welcome to Roulette!")
-console.setSize(22)
-console.setTextColor("orange")
-loginScreen = GraphWin("Login Screen", 400, 400)
-loginScreen.setCoords(0,0,400,300)
-loginScreen.setBackground("LightGrey")
-inputBox = Entry(Point(200,200), 15)
-inputBox.draw(loginScreen)
-confirmLogin = Rectangle(Point(100,50), Point(300,150))
-confirmLogin.setFill("Crimson")
-confirmLogin.draw(loginScreen)
-confirmLoginText = Text(Point(200,100), "LOGIN")
-confirmLoginText.setFill("white")
-confirmLoginText.setSize(26)
-confirmLoginText.draw(loginScreen)
-loginText = Text(Point(200,250), "Welcome To Roulette! Enter a username to get started!")
-loginText.setFill("crimson")
-loginText.setStyle("bold")
-loginText.setSize(12)
-betBox = Entry(Point(500,435), 15)
-loginText.draw(loginScreen)
-nameEnter = False
-while nameEnter == False:
-    loginClick = loginScreen.getMouse()
-    if loginClick.getX() >= 100 and loginClick.getX() <= 300:
-        if loginClick.getY() >= 50 and loginClick.getY() <= 150:
-            if len(inputBox.getText()) > 0:
-                username = inputBox.getText()
-                infile = open("playerinfo.txt", "r")
-                createNew = 0
-                for line in infile:
-                    if createNew == 0:        
-                        tempLine = str(line)
-                        if username in tempLine and createNew == 0:
-                            money = line.split(",")
-                            money = int(money[1])
-                            nameEnter = True
-                            loginScreen.close()
-                            break
-                        else:
-                            createNew = 1
-                            break
-                if createNew == 1:
-                    tempSet = username + ",1000"
-                    money = 1000
-                    outfile = open("playerinfo.txt", "a")
-                    outfile.write("\n")
-                    outfile.write(tempSet)
-                    outfile.close()
-                    infile.close()
-                    nameEnter = True
-                    loginScreen.close()
+
+# Draw the main labels between login, wheel, and bet
+def drawMainItems():
+    # Console In Mid of Roulette
+    console = Text(Point(0,0), "Welcome to Roulette!")
+    console.setSize(22)
+    console.setTextColor("orange")
+    # Login Screen Window
+    loginScreen = GraphWin("Login Screen", 400, 400)
+    loginScreen.setCoords(0,0,400,300)
+    loginScreen.setBackground("LightGrey")
+    # Name Input Box
+    inputBox = Entry(Point(200,200), 15)
+    inputBox.draw(loginScreen)
+    # Login Button
+    confirmLogin = Rectangle(Point(100,50), Point(300,150))
+    confirmLogin.setFill("Crimson")
+    confirmLogin.draw(loginScreen)
+    confirmLoginText = Text(Point(200,100), "LOGIN")
+    confirmLoginText.setFill("white")
+    confirmLoginText.setSize(26)
+    confirmLoginText.draw(loginScreen)
+    # Login Button Label
+    loginText = Text(Point(200,250), "Welcome To Roulette! Enter a username to get started!")
+    loginText.setFill("crimson")
+    loginText.setStyle("bold")
+    loginText.setSize(12)
+    loginText.draw(loginScreen)
+    # Bet Box
+    betBox = Entry(Point(500,435), 15)
+
+def login():
+    nameEnter = False
+    while nameEnter == False:
+        loginClick = loginScreen.getMouse()
+        if loginClick.getX() >= 100 and loginClick.getX() <= 300:
+            if loginClick.getY() >= 50 and loginClick.getY() <= 150:
+                if len(inputBox.getText()) > 0:
+                    username = inputBox.getText()
+                    infile = open("playerinfo.txt", "r")
+                    createNew = 0
+                    for line in infile:
+                        if createNew == 0:        
+                            tempLine = str(line)
+                            if username in tempLine and createNew == 0:
+                                money = line.split(",")
+                                money = int(money[1])
+                                nameEnter = True
+                                loginScreen.close()
+                                break
+                            else:
+                                createNew = 1
+                                break
+                    if createNew == 1:
+                        tempSet = username + ",1000"
+                        money = 1000
+                        outfile = open("playerinfo.txt", "a")
+                        outfile.write("\n")
+                        outfile.write(tempSet)
+                        outfile.close()
+                        infile.close()
+                        nameEnter = True
+                        loginScreen.close()
 ###############
 ### SET WHEEL WINDOW CONDITIONS
 wheel = GraphWin("Roulette Wheel", 750, 750)
@@ -125,8 +140,21 @@ def displayInitialMoney():
     moneyDisplay.setStyle("bold")
     moneyDisplay.setSize(36)
     moneyDisplay.draw(otherWin)
+    
 def updateMoney():
     moneyDisplay.setText(money)
+
+def updateMoneyFile():
+     infile = open("playerinfo.txt", "r")
+     tempList = []
+     #outfile = open("playerinfo.txt", "w")
+     for name in infile:
+         tempVar = name.split()
+         tempList = tempList + tempVar
+     infile.close()
+     print(tempList)
+     #outfile.close()
+updateMoneyFile()
 #############################################    
 def spinBall():
     betAmount = int(betBox.getText())
@@ -337,11 +365,12 @@ def awardPLayer():
 #############################################    
 ##### PROGRAM RUN #####
 #############################################
+drawMainItems()
+login()
 createWheel()
 createLabels()
 displayInitialMoney()
 console.draw(wheel)
-
 while True:
     click = otherWin.getMouse()
     x = click.getX()
