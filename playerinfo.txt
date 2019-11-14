@@ -1,2 +1,4 @@
-justin,1000
-tim,1000
+justin
+1000
+tim
+1000
