@@ -19,6 +19,7 @@ a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
 b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
 c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
 ###############
+classList = ["num0", "num1", "num2"]
 class NumberInfo:
     def __init__(self, number, color, oddEven, row, third, half):
         self.number = number
@@ -184,6 +185,13 @@ def runBets(winningNumber):
         winTemp = "WIN ON SINGLE: ", winningNumber
         money = money + (betAmount * 36)
         updateMoney()
+        # ROW3
+        classList[winningNumber]
+    print(classList[winningNumber].row)
+    #if betId == classList[winningNumber].row:
+    #    winTemp = "WIN ON SINGLE: ", winningNumber
+    #    money = money + (betAmount * 36)
+    #    updateMoney()
 #############################################
 #def updateWin():
 #def updateLoss():
@@ -198,7 +206,7 @@ def spinBall():
         ballColorSelect = random.randrange(6)
         ball.setFill(ballColors[ballColorSelect])
         ball.draw(wheel)
-        spinCount = random.randrange(113,342)
+        spinCount = random.randrange(30,31)
         print(spinCount)
         k = 0
         final = 0
