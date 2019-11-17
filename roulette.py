@@ -28,11 +28,14 @@ class NumberInfo:
         self.row = row
         self.third = third
         self.half = half
+        
+    def displayColor(self):
+        print(self.color)
+        
                 #(num, color, odEv , row, trd, hlf)
 num1 = NumberInfo("1", "red", "odd", "3", "1", "1")
 num2 = NumberInfo("2", "black", "even", "2", "1", "1")
 num3 = NumberInfo("3", "red", "odd", "1", "1", "1")
-print(num1.row)
 ###############
 # Draw the main labels between login, wheel, and bet
 
@@ -166,6 +169,17 @@ def updateMoney():
 #      #outfile.close()
 # updateMoneyFile()
 #############################################
+def convertBetId(ID):
+    ID = str(ID)
+    resultId = -1
+    if ID == "0" or ID == "00":
+        print("0 or 00")
+    elif ID == "100":
+        print("100")
+    else:
+        for x in range(1,37,1):
+            if ID == str(x):
+                print("num 1-36")
 ### Bet functions ###
 def runBets(winningNumber):
     betId = betIdBox.getText()
@@ -186,8 +200,8 @@ def runBets(winningNumber):
         money = money + (betAmount * 36)
         updateMoney()
         # ROW3
-        classList[winningNumber]
-    print(classList[winningNumber].row)
+        #classList[winningNumber]
+    #print(classList[winningNumber].row)
     #if betId == classList[winningNumber].row:
     #    winTemp = "WIN ON SINGLE: ", winningNumber
     #    money = money + (betAmount * 36)
@@ -199,6 +213,8 @@ def spinBall():
     betAmount = int(betBox.getText())
     global money
     if betAmount <= money:
+        betId = betIdBox.getText()
+        convertBetId(betId)
         money = money - betAmount
         moneyDisplay.setText(money)
         ball = Circle(Point(63.4,5.5), 3)
