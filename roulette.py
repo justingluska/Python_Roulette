@@ -56,10 +56,10 @@ def login():
     confirmLoginText.setSize(26)
     confirmLoginText.draw(loginScreen)
     # Login Button Label
-    loginText = Text(Point(200,250), "Welcome To Roulette! Enter a username to get started!")
+    loginText = Text(Point(200,250), "Welcome To Roulette!\nEnter a username to get started!")
     loginText.setFill("crimson")
     loginText.setStyle("bold")
-    loginText.setSize(12)
+    loginText.setSize(18)
     loginText.draw(loginScreen)
     
     ##################
@@ -170,21 +170,42 @@ def updateMoney():
 # updateMoneyFile()
 #############################################
 def convertBetId(ID):
+    #return resultID and use that in runBets
     ID = str(ID)
     resultId = -1
     if ID == "0" or ID == "00":
         print("0 or 00")
-    elif ID == "100":
-        print("100")
+        return 0
+    elif ID == "ROW1":
+        print("number 3 row = ", num3.row)
+        return 41
+    elif ID == "ROW2":
+        print("row2")
+        return 42
+    elif ID == "ROW3":
+        print("row3")
+        return 43
     else:
         for x in range(1,37,1):
             if ID == str(x):
                 print("num 1-36")
 ### Bet functions ###
 def runBets(winningNumber):
+    # add if function to check if boxes both have stuff inside them
     betId = betIdBox.getText()
     betAmount = int(betBox.getText())
     global money
+    #####
+    # bets for rows working
+    if convertBetId(betId) == 41:
+        if winningNumber%3 == 0:
+            print("row1!!! WOO!!")
+        ## ROW1
+        
+    #winningNumberConvert = "num", winningNumber, ".row"
+    #print(winningNumberConvert)
+    #if newBetId == winningNumberConvert:
+    #    print("cvt")
     # Single Digit Bets
     for x in range(1,37,1):
         if betId == str(x):
@@ -222,7 +243,8 @@ def spinBall():
         ballColorSelect = random.randrange(6)
         ball.setFill(ballColors[ballColorSelect])
         ball.draw(wheel)
-        spinCount = random.randrange(30,31)
+        #30 31 lands on 1
+        spinCount = random.randrange(38,380)
         print(spinCount)
         k = 0
         final = 0
@@ -248,7 +270,7 @@ def spinBall():
             while k+20 >= 38:
                 k = k - 38
         ball.setFill("Light Gray")
-        winningNumber = numberList[k+20]
+        winningNumber = int(numberList[k+20])
         runBets(winningNumber)
         console.setText(numberList[k+20])
         #ball.undraw()
@@ -461,13 +483,13 @@ drawBettingColors()
 #############################################
 splitter = Line(Point(0,500), Point(1000,500))
 splitter.draw(otherWin)
-console = Text(Point(0,0), "you're a pussy")
+console = Text(Point(0,0), "ajaahahhaah")
 console.setStyle("bold")
 console.setSize(24)
 console.setFill("yellow")
 console.draw(wheel)        
 betId = 0
-key = Text(Point(200,275), "BET KEYS:\n ENTER ANY TO SELECT\n\n\n '#' (1-38)\n'0' or '00'\n 'ROW#' (1-3)\n'1to18' or '19to36'\n'EVEN' or 'ODD'\n'BLACK' or 'RED'")
+key = Text(Point(200,275), "BET IDS:\n TYPE ONE TO SELECT\n\n '#' (1-38)\n'0' or '00'\n 'ROW#' (1-3)\n'1to18'\nor '19to36'\n'1to12'\nor '13to24'\nor '25to36'\n'EVEN' or 'ODD'\n'BLACK' or 'RED'")
 key.setSize(18)
 key.setFill("white")
 key.setFace("courier")
