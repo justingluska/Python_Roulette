@@ -177,29 +177,31 @@ def convertBetId(ID):
         print("0 or 00")
         return 0
     elif ID == "ROW1":
-        print("number 3 row = ", num3.row)
         return 41
     elif ID == "ROW2":
-        print("row2")
         return 42
     elif ID == "ROW3":
-        print("row3")
         return 43
     else:
         for x in range(1,37,1):
             if ID == str(x):
-                print("num 1-36")
+                return x # returns 1 to 36
 ### Bet functions ###
-def runBets(winningNumber):
+def runBets(winningNumber, betAmount):
     # add if function to check if boxes both have stuff inside them
     betId = betIdBox.getText()
     betAmount = int(betBox.getText())
     global money
     #####
     # bets for rows working
+    if 1 <= convertBetId(betId) <= 36:
+        if int(winningNumber) == convertBetId(betId):
+            money = money + (betAmount * 36)
+            updateMoney()
     if convertBetId(betId) == 41:
         if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
-            print("row1!!! WOO!!")
+            money = money + (betAmount * 2)
+            updateMoney()
         ## ROW1
         
     #winningNumberConvert = "num", winningNumber, ".row"
@@ -207,19 +209,19 @@ def runBets(winningNumber):
     #if newBetId == winningNumberConvert:
     #    print("cvt")
     # Single Digit Bets
-    for x in range(1,37,1):
-        if betId == str(x):
-            if betId == str(winningNumber):
-                winTemp = "WIN ON SINGLE: ", winningNumber
-                money = money + (betAmount * 36)
-                updateMoney()
-                #updateWin()
-                #updateLoss()
-    # 0 or 00 Bets (same concept as single)
-    if betId == str(winningNumber):
-        winTemp = "WIN ON SINGLE: ", winningNumber
-        money = money + (betAmount * 36)
-        updateMoney()
+#     for x in range(1,37,1):
+#         if betId == str(x):
+#             if betId == str(winningNumber):
+#                 winTemp = "WIN ON SINGLE: ", winningNumber
+#                 money = money + (betAmount * 36)
+#                 updateMoney()
+#                 #updateWin()
+#                 #updateLoss()
+#     # 0 or 00 Bets (same concept as single)
+#     if betId == str(winningNumber):
+#         winTemp = "WIN ON SINGLE: ", winningNumber
+#         money = money + (betAmount * 36)
+#         updateMoney()
         # ROW3
         #classList[winningNumber]
     #print(classList[winningNumber].row)
@@ -244,7 +246,8 @@ def spinBall():
         ball.setFill(ballColors[ballColorSelect])
         ball.draw(wheel)
         #30 31 lands on 1
-        spinCount = random.randrange(38,380)
+        # actual wheel (38,380)
+        spinCount = random.randrange(30,31)
         print(spinCount)
         k = 0
         final = 0
@@ -271,7 +274,7 @@ def spinBall():
                 k = k - 38
         ball.setFill("Light Gray")
         winningNumber = numberList[k+20]
-        runBets(winningNumber)
+        runBets(winningNumber, betAmount)
         console.setText(numberList[k+20])
         #ball.undraw()
     elif betAmount > money:
@@ -446,7 +449,7 @@ def drawBettingColors():
         message.draw(otherWin)
 #def drawBettingMisc:
     
-def awardPLayer():
+def awardPlayer():
     print()
 #############################################    
 ##### PROGRAM RUN #####
