@@ -198,7 +198,7 @@ def runBets(winningNumber):
     #####
     # bets for rows working
     if convertBetId(betId) == 41:
-        if winningNumber%3 == 0:
+        if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             print("row1!!! WOO!!")
         ## ROW1
         
@@ -270,7 +270,7 @@ def spinBall():
             while k+20 >= 38:
                 k = k - 38
         ball.setFill("Light Gray")
-        winningNumber = int(numberList[k+20])
+        winningNumber = numberList[k+20]
         runBets(winningNumber)
         console.setText(numberList[k+20])
         #ball.undraw()
