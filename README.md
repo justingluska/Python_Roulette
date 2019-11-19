@@ -11,4 +11,10 @@
 * Spin tracking
 * And more!
 
-## **[Visit My Personal Website](http://www.justingluska.com)**
+## **Bugs**
+* Report in the issues tracker, will fix any found!
+
+## **Will Not Fix**
+* You can only bet on 1 option currently (key list is displayed in-game). I do not plan on adding support to bet on multiple options at once (like $5 on '1' and $10 on '3').
+
+## **[Visit My Personal Website!](http://www.justingluska.com)**
