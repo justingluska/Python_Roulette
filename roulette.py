@@ -182,12 +182,35 @@ def convertBetId(ID):
         return 42
     elif ID == "ROW3":
         return 43
+    elif ID == "1to12":
+        return 44
+    elif ID == "13to24":
+        return 45
+    elif ID == "25to36":
+        return 46
+    elif ID == "1to18":
+        return 47
+    elif ID == "19to36":
+        return 48
+    elif ID == "EVEN":
+        return 50
+    elif ID == "ODD":
+        return 51
+    elif ID == "BLACK":
+        return 52
+    elif ID == "RED":
+        return 53
     elif 1<=int(ID)<=36:
         for x in range(1,37,1):
             if ID == str(x):
                 return x # returns 1 to 36
     else:
         console.setText("Error! Please enter a valid Bet ID")
+#####################
+# Lose Function
+def playerLost():
+    console.setText("You Lost! Try again!")
+#####################
 ### Bet functions ###
 def runBets(winningNumber, betAmount):
     # add if function to check if boxes both have stuff inside them
@@ -199,21 +222,51 @@ def runBets(winningNumber, betAmount):
     if 1 <= convertBetId(betId) <= 36:
         if int(winningNumber) == convertBetId(betId):
             money = money + (betAmount * 36)
-            updateMoney()
+        else:
+            playerLost()
     elif convertBetId(betId) == 41: #ROW 1
         if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
-            updateMoney()
+        else:
+            playerLost()
     elif convertBetId(betId) == 42: #ROW 2
         if (int(winningNumber)+1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
-            updateMoney()
+        else:
+            playerLost()
     elif convertBetId(betId) == 43: #ROW 3
         if (int(winningNumber)-1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
-            updateMoney()
+        else:
+            playerLost()
+    elif convertBetId(betId) == 44: #1 to 12
+        array = [1,2,3,4,5,6,7,8,9,10,11,12]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 3)
+    elif convertBetId(betId) == 45: #13 to 24
+        array = [13,14,15,16,17,18,19,20,21,22,23,24]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 3)
+    elif convertBetId(betId) == 46: #25 to 36
+        array = [25,26,27,28,29,30,31,32,33,34,35,36]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 3)
+    elif convertBetId(betId) == 47: #1 to 18
+        array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 2)
+    elif convertBetId(betId) == 48: #19 to 36
+        array = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 2)
     else:
         console.setText("Error! Please enter a valid Bet ID")
+    updateMoney()
     #winningNumberConvert = "num", winningNumber, ".row"
     #print(winningNumberConvert)
     #if newBetId == winningNumberConvert:
@@ -253,8 +306,10 @@ def spinBall():
                "29","30","31","32","33","34","35","36",
                "ROW1", "ROW2", "ROW3", "00", "1to18", "19to36",
                "1to12", "13to24", "25to36", "EVEN", "ODD", "BLACK", "RED"]
+        valid = False
         for x in validId:
             if x == betId:
+                valid = True
                 betBox.undraw()
                 betIdBox.undraw()
                 convertBetId(betId)
@@ -304,8 +359,8 @@ def spinBall():
                 #ball.undraw()
             elif betAmount > money:
                 console.setText("Error! You can't bet more than you have")
-            else:
-                console.setText("Error! Invalid Bet ID")
+        if valid == False:
+            console.setText("Error: Enter Valid Bet ID")
 #############################################
 
 #############################################
@@ -489,14 +544,9 @@ wheel.setBackground("Steel Blue")
 #############################################
 ### CREATE BET CONTROL & COMMAND WINDOW
 #############################################
-otherWin = GraphWin("Bet Controls", 750, 750)
+otherWin = GraphWin("Bet Controls", 750, 750) #750
 otherWin.setBackground("Teal")
 otherWin.setCoords(0,0,1000,1000)
-
-#     console = Text(Point(0,0), "Welcome to Roulette!")
-#     console.setSize(22)
-#     console.setTextColor("orange")
-#     console.draw(wheel)
 
 betBox = Entry(Point(500,350), 15)
 betIdBox = Entry(Point(500,250), 15)
