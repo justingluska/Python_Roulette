@@ -182,10 +182,12 @@ def convertBetId(ID):
         return 42
     elif ID == "ROW3":
         return 43
-    else:
+    elif 1<=int(ID)<=36:
         for x in range(1,37,1):
             if ID == str(x):
                 return x # returns 1 to 36
+    else:
+        console.setText("Error! Please enter a valid Bet ID")
 ### Bet functions ###
 def runBets(winningNumber, betAmount):
     # add if function to check if boxes both have stuff inside them
@@ -198,12 +200,20 @@ def runBets(winningNumber, betAmount):
         if int(winningNumber) == convertBetId(betId):
             money = money + (betAmount * 36)
             updateMoney()
-    if convertBetId(betId) == 41:
+    elif convertBetId(betId) == 41: #ROW 1
         if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
             updateMoney()
-        ## ROW1
-        
+    elif convertBetId(betId) == 42: #ROW 2
+        if (int(winningNumber)+1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
+            money = money + (betAmount * 2)
+            updateMoney()
+    elif convertBetId(betId) == 43: #ROW 3
+        if (int(winningNumber)-1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
+            money = money + (betAmount * 2)
+            updateMoney()
+    else:
+        console.setText("Error! Please enter a valid Bet ID")
     #winningNumberConvert = "num", winningNumber, ".row"
     #print(winningNumberConvert)
     #if newBetId == winningNumberConvert:
@@ -235,50 +245,67 @@ def runBets(winningNumber, betAmount):
 def spinBall():
     betAmount = int(betBox.getText())
     global money
-    if betAmount <= money:
+    if betAmount <= money and not betIdBox == "":
         betId = betIdBox.getText()
-        convertBetId(betId)
-        money = money - betAmount
-        moneyDisplay.setText(money)
-        ball = Circle(Point(63.4,5.5), 3)
-        ballColors = ["orange", "red", "green", "yellow", "Spring Green", "pink", "grey"]
-        ballColorSelect = random.randrange(6)
-        ball.setFill(ballColors[ballColorSelect])
-        ball.draw(wheel)
-        #30 31 lands on 1
-        # actual wheel (38,380)
-        spinCount = random.randrange(30,31)
-        print(spinCount)
-        k = 0
-        final = 0
-        for i in range(1,spinCount):
-            j = i/spinCount
-            if j >= .95:
-                time.sleep((j/1.5)/2)
-            elif j >= .90:
-                time.sleep((j/3)/2)
-            elif j >= .80:
-                time.sleep((j/6)/2)
-            elif j >= .70:
-                time.sleep((j/12)/2)
-            elif j < 70:
-                time.sleep(.025)
-            elif j < 55:
-                time.sleep(.010)
-            elif j < 35:
-                time.sleep(.005)
-            ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
-        if spinCount+20 > 38:
-            k = spinCount
-            while k+20 >= 38:
-                k = k - 38
-        ball.setFill("Light Gray")
-        winningNumber = numberList[k+20]
-        runBets(winningNumber, betAmount)
-        console.setText(numberList[k+20])
-        #ball.undraw()
-    elif betAmount > money:
-        console.setText("Error! You can't bet more than you have")
+        validId = ["0","1","2","3","4","5","6","7","8","9","10",
+               "11","12","13","14","15","16","17","18","19",
+               "20","21","22","23","24","25","26","27","28",
+               "29","30","31","32","33","34","35","36",
+               "ROW1", "ROW2", "ROW3", "00", "1to18", "19to36",
+               "1to12", "13to24", "25to36", "EVEN", "ODD", "BLACK", "RED"]
+        for x in validId:
+            if x == betId:
+                betBox.undraw()
+                betIdBox.undraw()
+                convertBetId(betId)
+                money = money - betAmount
+                moneyDisplay.setText(money)
+                betIdLabel = "Bet On: " + str(betId)
+                console.setText(betIdLabel)
+                ball = Circle(Point(63.4,5.5), 3)
+                ballColors = ["orange", "red", "green", "yellow", "Spring Green", "pink", "grey", "cyan", "Dark Orange", "Firebrick", "Fuchsia", "Indigo", "Sienna", "Yellow Green"]
+                ballColorSelect = random.randrange(6)
+                ball.setFill(ballColors[ballColorSelect])
+                ball.draw(wheel)
+                #30 31 lands on 1
+                # actual wheel (38,380)
+                spinCount = random.randrange(38,380)
+                print(spinCount)
+                k = 0
+                final = 0
+                for i in range(1,spinCount):
+                    j = i/spinCount
+                    if j >= .95:
+                        time.sleep((j/1.5)/2)
+                    elif j >= .90:
+                        time.sleep((j/3)/2)
+                    elif j >= .80:
+                        time.sleep((j/6)/2)
+                    elif j >= .70:
+                        time.sleep((j/12)/2)
+                    elif j < 70:
+                        time.sleep(.025)
+                    elif j < 55:
+                        time.sleep(.010)
+                    elif j < 35:
+                        time.sleep(.005)
+                    ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
+                if spinCount+20 > 38:
+                    k = spinCount
+                    while k+20 >= 38:
+                        k = k - 38
+                ball.setFill("Light Gray")
+                winningNumber = numberList[k+20]
+                runBets(winningNumber, betAmount)
+                betBox.draw(otherWin)
+                betIdBox.draw(otherWin)
+                winningNumberLabel = "Landed on: " + str(winningNumber)
+                console.setText(winningNumberLabel)
+                #ball.undraw()
+            elif betAmount > money:
+                console.setText("Error! You can't bet more than you have")
+            else:
+                console.setText("Error! Invalid Bet ID")
 #############################################
 
 #############################################
