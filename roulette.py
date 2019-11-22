@@ -61,7 +61,6 @@ def login():
     loginText.setStyle("bold")
     loginText.setSize(18)
     loginText.draw(loginScreen)
-    
     ##################
     nameEnter = False
     while nameEnter == False:
@@ -219,51 +218,68 @@ def runBets(winningNumber, betAmount):
     global money
     #####
     # bets for rows working
-    if 1 <= convertBetId(betId) <= 36:
+    if 1 <= convertBetId(betId) <= 36: # Single Digit 1-36 ID
         if int(winningNumber) == convertBetId(betId):
             money = money + (betAmount * 36)
         else:
             playerLost()
-    elif convertBetId(betId) == 41: #ROW 1
+    elif convertBetId(betId) == 41: # ROW 1 ID
         if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
             playerLost()
-    elif convertBetId(betId) == 42: #ROW 2
+    elif convertBetId(betId) == 42: # ROW 2 ID
         if (int(winningNumber)+1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
             playerLost()
-    elif convertBetId(betId) == 43: #ROW 3
+    elif convertBetId(betId) == 43: # ROW 3 ID
         if (int(winningNumber)-1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
             playerLost()
-    elif convertBetId(betId) == 44: #1 to 12
+    elif convertBetId(betId) == 44: # 1 to 12 ID
         array = [1,2,3,4,5,6,7,8,9,10,11,12]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 3)
-    elif convertBetId(betId) == 45: #13 to 24
+    elif convertBetId(betId) == 45: # 13 to 24 ID
         array = [13,14,15,16,17,18,19,20,21,22,23,24]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 3)
-    elif convertBetId(betId) == 46: #25 to 36
+    elif convertBetId(betId) == 46: # 25 to 36 ID
         array = [25,26,27,28,29,30,31,32,33,34,35,36]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 3)
-    elif convertBetId(betId) == 47: #1 to 18
+    elif convertBetId(betId) == 47: # 1 to 18 ID
         array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 2)
-    elif convertBetId(betId) == 48: #19 to 36
+    elif convertBetId(betId) == 48: # 19 to 36 ID
         array = [19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 2)
+    elif convertBetId(betId) == 50: # Even Bets ID
+        if int(winningNumber) % 2 == 0 and not int(winningNumber) == 0 and not winningNumber == "00":
+            money = money + (betAmount * 2)
+    elif convertBetId(betId) == 51 : # Odd Bets ID
+        if int(winningNumber) % 2 == 1 and not int(winningNumber) == 0 and not winningNumber == "00":
+            money = money + (betAmount * 2)
+    elif convertBetId(betId) == 52: # Black Colors
+        array = [2,4,6,10,11,13,15,17,20,22,24,26,28,29,31,33,35]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 2)
+    elif convertBetId(betId) == 53: # Red Colors
+        array = [1,3,5,7,9,12,14,16,18,29,21,23,25,27,30,32,34,36]
+        for x in array:
+            if x == int(winningNumber):
+                money = money + (betAmount * 2)
+    #elif ##53 red
     else:
         console.setText("Error! Please enter a valid Bet ID")
     updateMoney()
@@ -298,7 +314,7 @@ def runBets(winningNumber, betAmount):
 def spinBall():
     betAmount = int(betBox.getText())
     global money
-    if betAmount <= money and not betIdBox == "":
+    if betAmount <= money and not betIdBox == "" and money > 0:
         betId = betIdBox.getText()
         validId = ["0","1","2","3","4","5","6","7","8","9","10",
                "11","12","13","14","15","16","17","18","19",
