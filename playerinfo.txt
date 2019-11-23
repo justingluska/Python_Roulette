@@ -1,1 +1,3 @@
 DEFAULTMONEY, 1000
+justin, 999
+tim, 994

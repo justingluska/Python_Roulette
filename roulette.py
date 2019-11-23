@@ -333,7 +333,6 @@ def spinBall():
                 #30 31 lands on 1
                 # actual wheel (38,380)
                 spinCount = random.randrange(38,380)
-                print(spinCount)
                 k = 0
                 final = 0
                 for i in range(1,spinCount):
@@ -346,11 +345,11 @@ def spinBall():
                         time.sleep((j/6)/2)
                     elif j >= .70:
                         time.sleep((j/12)/2)
-                    elif j < 70:
+                    elif j > 70:
                         time.sleep(.025)
-                    elif j < 55:
+                    elif j > 55:
                         time.sleep(.010)
-                    elif j < 35:
+                    elif j > 35:
                         time.sleep(.005)
                     ball.move(-1*math.sin(0.165346981767014*i)*10.5,math.cos(0.165346981767014*i)*10.5)
                 if spinCount+20 > 38:
@@ -599,7 +598,6 @@ key.setSize(18)
 key.setFill("white")
 key.setFace("courier")
 key.draw(otherWin)
-
 
 while True:
     click = otherWin.getMouse()
