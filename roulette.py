@@ -13,7 +13,7 @@ import random
 
 ###############
 username = ""
-money = 20
+money = 0
 winningNumber = 100
 a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
 b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
@@ -41,23 +41,27 @@ num3 = NumberInfo("3", "red", "odd", "1", "1", "1")
 
 def login():
     # Login Screen Window
-    loginScreen = GraphWin("Login Screen", 400, 400)
+    loginScreen = GraphWin("Roulette Login", 400, 400)
     loginScreen.setCoords(0,0,400,300)
-    loginScreen.setBackground("LightGrey")
+    loginScreen.setBackground("Light Sky Blue")
     # Name Input Box
     inputBox = Entry(Point(200,200), 15)
     inputBox.draw(loginScreen)
     # Login Button
+    confirmLoginShadow = Rectangle(Point(103,47), Point(303,147))
+    confirmLoginShadow.setFill("black")
+    confirmLoginShadow.draw(loginScreen)
     confirmLogin = Rectangle(Point(100,50), Point(300,150))
     confirmLogin.setFill("Crimson")
     confirmLogin.draw(loginScreen)
     confirmLoginText = Text(Point(200,100), "LOGIN")
+    confirmLoginText.setStyle("bold")
     confirmLoginText.setFill("white")
     confirmLoginText.setSize(26)
     confirmLoginText.draw(loginScreen)
     # Login Button Label
     loginText = Text(Point(200,250), "Welcome To Roulette!\nEnter a username to get started!")
-    loginText.setFill("crimson")
+    loginText.setFill("black")
     loginText.setStyle("bold")
     loginText.setSize(18)
     loginText.draw(loginScreen)
@@ -68,34 +72,16 @@ def login():
         if loginClick.getX() >= 100 and loginClick.getX() <= 300:
             if loginClick.getY() >= 50 and loginClick.getY() <= 150:
                 if len(inputBox.getText()) > 0:
+                    global username
                     username = inputBox.getText()
                     infile = open("playerinfo.txt", "r")
-                    createNew = 0
-                    userList = []
-                    for line in infile:
-                        line.strip('\n')
-                        userList.append(str(line))
-                    for line in userList:
-                        print(userList)
-                        if createNew == 0:        
-                            if username in line and createNew == 0:
-                                print(line)
-                                nameEnter = True
-                                loginScreen.close()
-                                break
-                            else:
-                                createNew = 1
-                                break
-                    if createNew == 1:
-                        tempSet = username + ",1000"
-                        money = 1000
-                        outfile = open("playerinfo.txt", "a")
-                        outfile.write("\n")
-                        outfile.write(tempSet)
-                        outfile.close()
-                        infile.close()
-                        nameEnter = True
-                        loginScreen.close()
+                    for x in infile:
+                        global money
+                        money = int(x.split()[1])
+                    infile.close()
+                    loginScreen.close()
+                    nameEnter = True
+                    updateMoney()
 
 ###############
 
@@ -156,6 +142,12 @@ def displayInitialMoney():
 def updateMoney():
     moneyDisplay.setText(money)
 
+def updateMoneyFile():
+    outfile = open("playerinfo.txt", "a")
+    toFile = "\n" + str(username) + ", " + str(money)
+    outfile.write(toFile)
+    outfile.close()
+    
 # def updateMoneyFile():
 #      infile = open("playerinfo.txt", "r")
 #      tempList = []
@@ -314,7 +306,7 @@ def runBets(winningNumber, betAmount):
 def spinBall():
     betAmount = int(betBox.getText())
     global money
-    if betAmount <= money and not betIdBox == "" and money > 0:
+    if betAmount <= int(money) and not betIdBox == "" and int(money) > 0:
         betId = betIdBox.getText()
         validId = ["0","1","2","3","4","5","6","7","8","9","10",
                "11","12","13","14","15","16","17","18","19",
@@ -372,13 +364,30 @@ def spinBall():
                 betIdBox.draw(otherWin)
                 winningNumberLabel = "Landed on: " + str(winningNumber)
                 console.setText(winningNumberLabel)
+                updateMoneyFile()
                 #ball.undraw()
-            elif betAmount > money:
+                if money <= 0:
+                    otherWin.close()
+                    wheel.close()
+                    resetMoney()
+            elif betAmount > int(money):
                 console.setText("Error! You can't bet more than you have")
         if valid == False:
             console.setText("Error: Enter Valid Bet ID")
-#############################################
 
+#############################################
+def resetMoney():
+    lossWin = GraphWin("You Lost!", 400, 400)
+    lossWin.setCoords(0, 0, 1000, 1000)
+    displayLoss = Text(Point(500,500), "You Lost! Click anywhere to close program. Thanks for playing!")
+    lossWin.setBackground("crimson")
+    displayLoss.setFill("white")
+    displayLoss.draw(lossWin)
+    resetFile = open("playerinfo.txt", "w")
+    resetFile.write("DEFAULTMONEY, 1000")
+    resetFile.close()
+    lossWin.getMouse()
+    lossWin.close()
 #############################################
 def drawBettingWheel():
     for i in range(3):
@@ -579,10 +588,10 @@ drawBettingColors()
 #############################################
 splitter = Line(Point(0,500), Point(1000,500))
 splitter.draw(otherWin)
-console = Text(Point(0,0), "ajaahahhaah")
+console = Text(Point(0,0), "Set Bet ID & Money then Spin!")
 console.setStyle("bold")
 console.setSize(24)
-console.setFill("yellow")
+console.setFill("Lavender")
 console.draw(wheel)        
 betId = 0
 key = Text(Point(200,275), "BET IDS:\n TYPE ONE TO SELECT\n\n '#' (1-38)\n'0' or '00'\n 'ROW#' (1-3)\n'1to18'\nor '19to36'\n'1to12'\nor '13to24'\nor '25to36'\n'EVEN' or 'ODD'\n'BLACK' or 'RED'")
