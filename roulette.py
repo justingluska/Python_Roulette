@@ -1,44 +1,68 @@
-# JUSTIN GLUSKA
-# ECS102 Final
+############################
+# roulette.py
+# Justin Gluska
 # Section M5
-# Due December 5th, 2019
+# jgluska
+#
 # Roulette Board Game
+# ECS102 Final
 
-### IMPORT GRAPHICS AND MATH
+############################
+########## IMPORTS #########
 from graphics import *
 import math
 import time
 import random
-############################
 
-###############
+############################
+### SET VARIABLES & ROWS ###
 username = ""
 money = 0
 winningNumber = 100
 a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
 b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
 c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
-###############
-classList = ["num0", "num1", "num2"]
-class NumberInfo:
-    def __init__(self, number, color, oddEven, row, third, half):
-        self.number = number
-        self.color = color
-        self.oddEven = oddEven
-        self.row = row
-        self.third = third
-        self.half = half
+############################
+#### STATISTICS OF GAME ####
+
+class Stats:
+    def __init__(self, value):
+        self.value = value
         
-    def displayColor(self):
-        print(self.color)
+    def display(self):
+        return self.value
+
+    def increase(self):
+        self.value += 1
         
-                #(num, color, odEv , row, trd, hlf)
-num1 = NumberInfo("1", "red", "odd", "3", "1", "1")
-num2 = NumberInfo("2", "black", "even", "2", "1", "1")
-num3 = NumberInfo("3", "red", "odd", "1", "1", "1")
+statOdd = Stats(0.00)
+statEven = Stats(0.00)
+statRed = Stats(0.00)
+statBlack = Stats(0.00)
+statGreen = Stats(0.00)
+statTotal = Stats(0.00)
+
+
+# class NumberInfo:
+#     def __init__(self, number, color, oddEven, row, third, half):
+#         self.number = number
+#         self.color = color
+#         self.oddEven = oddEven
+#         self.row = row
+#         self.third = third
+#         self.half = half
+#         
+#     def displayColor(self):
+#         print(self.color)
+#         
+#                 #(num, color, odEv , row, trd, hlf)
+# num1 = NumberInfo("1", "red", "odd", "3", "1", "1")
+# num2 = NumberInfo("2", "black", "even", "2", "1", "1")
+# num3 = NumberInfo("3", "red", "odd", "1", "1", "1")
 ###############
 # Draw the main labels between login, wheel, and bet
 
+    
 def login():
     # Login Screen Window
     loginScreen = GraphWin("Roulette Login", 400, 400)
@@ -109,6 +133,20 @@ def createWheel():
     blockCircle = Circle(Point(0,0), 50)
     blockCircle.draw(wheel)
     blockCircle.setFill("maroon")
+
+def updateLabels():
+    t1Temp = statOdd.display() / statTotal.display()
+    t1Round = round(t1Temp, 3) * 100
+    t1 = "Odds:\n" + str(t1Round) + "%"
+    oddL.setText(t1)
+    t2 = "Evens:\n" + str(round((statEven.display() / statTotal.display()), 4) * 100) + "%"
+    evenL.setText(t2)
+    t3 = "Reds:\n" + str(round((statRed.display() / statTotal.display()), 4) * 100) + "%"
+    redL.setText(t3)
+    t4 = "Blacks:\n" + str(round((statBlack.display() / statTotal.display()), 4) * 100) + "%"
+    blackL.setText(t4)
+    t5 = "Greens:\n" + str(round((statGreen.display() / statTotal.display()), 4) * 100) + "%"
+    greenL.setText(t5)
 ###
 
 
@@ -147,18 +185,8 @@ def updateMoneyFile():
     toFile = "\n" + str(username) + ", " + str(money)
     outfile.write(toFile)
     outfile.close()
-    
-# def updateMoneyFile():
-#      infile = open("playerinfo.txt", "r")
-#      tempList = []
-#      #outfile = open("playerinfo.txt", "w")
-#      for name in infile:
-#          tempVar = name.split()
-#          tempList = tempList + tempVar
-#      infile.close()
-#      print(tempList)
-#      #outfile.close()
-# updateMoneyFile()
+###
+
 #############################################
 def convertBetId(ID):
     #return resultID and use that in runBets
@@ -262,47 +290,36 @@ def runBets(winningNumber, betAmount):
         if int(winningNumber) % 2 == 1 and not int(winningNumber) == 0 and not winningNumber == "00":
             money = money + (betAmount * 2)
     elif convertBetId(betId) == 52: # Black Colors
-        array = [2,4,6,10,11,13,15,17,20,22,24,26,28,29,31,33,35]
+        array = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 2)
     elif convertBetId(betId) == 53: # Red Colors
-        array = [1,3,5,7,9,12,14,16,18,29,21,23,25,27,30,32,34,36]
+        array = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 2)
-    #elif ##53 red
     else:
         console.setText("Error! Please enter a valid Bet ID")
+    if int(winningNumber) % 2 == 0 and not winningNumber == "0" and not winningNumber == "00":
+        statEven.increase()
+    if int(winningNumber) % 2 == 1:
+        statOdd.increase()
+    if winningNumber == "0" or winningNumber == "00":
+        statGreen.increase()
+    else:
+        blackArray = [2,4,6,8,10,11,13,15,17,20,22,24,26,28,29,31,33,35]
+        for x in blackArray:
+            if x == int(winningNumber):
+                statBlack.increase()
+        redArray = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]
+        for x in redArray:
+            if x == int(winningNumber):
+                statRed.increase()
+    statTotal.increase()
     updateMoney()
-    #winningNumberConvert = "num", winningNumber, ".row"
-    #print(winningNumberConvert)
-    #if newBetId == winningNumberConvert:
-    #    print("cvt")
-    # Single Digit Bets
-#     for x in range(1,37,1):
-#         if betId == str(x):
-#             if betId == str(winningNumber):
-#                 winTemp = "WIN ON SINGLE: ", winningNumber
-#                 money = money + (betAmount * 36)
-#                 updateMoney()
-#                 #updateWin()
-#                 #updateLoss()
-#     # 0 or 00 Bets (same concept as single)
-#     if betId == str(winningNumber):
-#         winTemp = "WIN ON SINGLE: ", winningNumber
-#         money = money + (betAmount * 36)
-#         updateMoney()
-        # ROW3
-        #classList[winningNumber]
-    #print(classList[winningNumber].row)
-    #if betId == classList[winningNumber].row:
-    #    winTemp = "WIN ON SINGLE: ", winningNumber
-    #    money = money + (betAmount * 36)
-    #    updateMoney()
+    updateLabels()
 #############################################
-#def updateWin():
-#def updateLoss():
 def spinBall():
     betAmount = int(betBox.getText())
     global money
@@ -356,7 +373,7 @@ def spinBall():
                     k = spinCount
                     while k+20 >= 38:
                         k = k - 38
-                ball.setFill("Light Gray")
+                ball.setFill("")
                 winningNumber = numberList[k+20]
                 runBets(winningNumber, betAmount)
                 betBox.draw(otherWin)
@@ -598,6 +615,16 @@ key.setSize(18)
 key.setFill("white")
 key.setFace("courier")
 key.draw(otherWin)
+oddL = Text(Point(-80,80), "Odds:\n0.00%")
+oddL.draw(wheel)
+evenL = Text(Point(80,80), "Even:\n0.00%")
+evenL.draw(wheel)
+redL = Text(Point(-80,-70), "Red:\n0.00%")
+redL.draw(wheel)
+blackL = Text(Point(-80,-80), "Black\n0.00%")
+blackL.draw(wheel)
+greenL = Text(Point(80,-80), "Green\n0.00%")
+greenL.draw(wheel)
 
 while True:
     click = otherWin.getMouse()
