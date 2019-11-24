@@ -214,9 +214,14 @@ def playerLost():
 ### Bet functions ###
     
 def runBets(winningNumber, betAmount):
+    if betBox.getText().isdigit():
+        betAmount = int(betBox.getText())
+    else:
+        betAmount = 1
+        console.setText("Invalid Bet Amount. Set to $1")
     # add if function to check if boxes both have stuff inside them
     betId = betIdBox.getText()
-    betAmount = int(betBox.getText())
+    #betAmount = int(betBox.getText())
     global money
     #####
     # bets for rows working
@@ -306,7 +311,12 @@ def runBets(winningNumber, betAmount):
 ############### SPIN THE BALL ###############
     
 def spinBall():
-    betAmount = int(betBox.getText())
+    if betBox.getText().isdigit():
+        betAmount = int(betBox.getText())
+    else:
+        betAmount = 1
+        console.setText("Invalid Bet Amount. Set to $1")
+    #betAmount = int(betBox.getText())
     global money
     if betAmount <= int(money) and not betIdBox == "" and int(money) > 0:
         betId = betIdBox.getText()
