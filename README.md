@@ -2,7 +2,7 @@
 ## ECS102 Final Project
 ## by Justin Gluska
 
-**Play Roulette by downloading and running 'roulette.py', enter a username and automatically start with a certain amount of money. The game saves high scores for each username so try to get the highest score!**
+**Play Roulette by downloading and running 'roulette.py', enter a username and automatically start with a certain amount of money. The game saves the name of each player with the remaining money so try not to lose!**
 
 ## **Features**
 * Random wheel rotation
