@@ -25,6 +25,7 @@ c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
 ############################
 #### STATISTICS OF GAME ####
 
+# (CLOD) - CLASS TO TRACK STAT/PCT%
 class Stats:
     def __init__(self, value):
         self.value = value
@@ -34,7 +35,8 @@ class Stats:
 
     def increase(self):
         self.value += 1
-        
+
+# (LOOD) - OBJECTS FOR STATS WITH INITIAL CHANCE
 statOdd = Stats(0.00)
 statEven = Stats(0.00)
 statRed = Stats(0.00)
@@ -46,7 +48,7 @@ statTotal = Stats(0.00)
 # Draw the main labels between login, wheel, and bet
 
 def login():
-    # Login Screen Window
+    # (GW) LOGIN SCREEN WINDOW
     loginScreen = GraphWin("Roulette Login", 400, 400)
     loginScreen.setCoords(0,0,400,300)
     loginScreen.setBackground("Light Sky Blue")
@@ -80,6 +82,7 @@ def login():
                 if len(inputBox.getText()) > 0:
                     global username
                     username = inputBox.getText()
+                    # (IFL) - GETS MONEY TO START GAME WITH
                     infile = open("playerinfo.txt", "r")
                     for x in infile:
                         global money
@@ -160,6 +163,7 @@ def updateMoney():
     moneyDisplay.setText(money)
 
 def updateMoneyFile():
+    # (OFL) - UPDATES MONEY/ERASES TO FILE
     outfile = open("playerinfo.txt", "a")
     toFile = "\n" + str(username) + ", " + str(money)
     outfile.write(toFile)
@@ -310,6 +314,7 @@ def runBets(winningNumber, betAmount):
 #############################################
 ############### SPIN THE BALL ###############
     
+# (FNC) - CHECKS VALID PARAMETERS & SPINS THE BALL
 def spinBall():
     if betBox.getText().isdigit():
         betAmount = int(betBox.getText())
@@ -346,7 +351,8 @@ def spinBall():
                 ball.draw(wheel)
                 #30 31 lands on 1
                 # actual wheel (38,380)
-                spinCount = random.randrange(38,380)
+                # (RND) - WILL GENERATE 2-10 RANDOM WHEEL SPINS
+                spinCount = random.randrange(76,380)
                 k = 0
                 final = 0
                 # SPEED OF BALL
@@ -593,6 +599,7 @@ otherWin = GraphWin("Bet Controls", 750, 750) #750
 otherWin.setBackground("Teal")
 otherWin.setCoords(0,0,1000,1000)
 
+# (IEB) - ENTER BET ID & BET AMOUNT
 betBox = Entry(Point(500,350), 15)
 betIdBox = Entry(Point(500,250), 15)
 
@@ -609,6 +616,7 @@ drawBettingColors()
 
 splitter = Line(Point(0,500), Point(1000,500))
 splitter.draw(otherWin)
+# (OTXT) - CONSOLE IS THE DISPLAY OF MESSAGES
 console = Text(Point(0,0), "Set Bet ID & Money then Spin!")
 console.setStyle("bold")
 console.setSize(24)
@@ -647,6 +655,7 @@ greenL.setSize(19)
 ########################################
 ############# BET W MONEY ##############
 while True:
+    # (IMS) - CHECKS IF VALID BUTTON CLICK (IN SPIN BTN)
     click = otherWin.getMouse()
     x = click.getX()
     y = click.getY()
