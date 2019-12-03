@@ -4,6 +4,8 @@
 
 **Play Roulette by downloading and running 'roulette.py', enter a username and automatically start with a certain amount of money. The game saves the name of each player with the remaining money so try not to lose!**
 
+<img src="https://i.imgur.com/ga5roG7.png">
+
 ## **Features**
 * Random wheel rotation
 * Customized betting
