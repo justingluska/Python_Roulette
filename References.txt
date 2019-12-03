@@ -1,0 +1,9 @@
+References.txt
+Justin Gluska
+
+Tim from Boston helped me conceptualize the trigonometry to move the ball across the screen.
+Prof. Baruch helped me do the trigonometry to get the ball moving across the screen.
+My roommate Karrar helped me bug test the game and find validation errors.
+I used references from my ECS102 lecture to code aspects of the game (While True and If/Else)
+I based my roulette wheel on a google picture found at https://imgur.com/a/OKOySTJ
+My friend Zara played the game once it was completed to ensure it wasn't confusing and was easy to understand.

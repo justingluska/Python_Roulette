@@ -2,7 +2,7 @@
 # roulette.py
 # Justin Gluska
 # Section M5
-# jgluska
+# jgluska   @syr.edu
 #
 # Roulette Board Game
 # ECS102 Final

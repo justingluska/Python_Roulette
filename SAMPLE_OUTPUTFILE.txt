@@ -1,0 +1,5 @@
+DEFAULTMONEY, 1000
+Justin, 900
+Tim, 850
+Justin, 700
+Justin, 900
