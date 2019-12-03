@@ -27,12 +27,14 @@ c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
 
 # (CLOD) - CLASS TO TRACK STAT/PCT%
 class Stats:
+    # Initializes stats
     def __init__(self, value):
         self.value = value
         
+    # Simply returns object value
     def display(self):
         return self.value
-
+    # Increases value by 1
     def increase(self):
         self.value += 1
 
@@ -98,10 +100,12 @@ def login():
 def createWheel():
     rouletteCircle = Circle(Point(0,0), 90)
     rouletteCircle.draw(wheel)
+    # Creates the 38 sections of a roulette wheel
     for x in range(38):
         temp = (math.pi*x)/180
         temp2 = (math.pi*(x+1))/180
         aLine = Polygon(Point(0,0), Point(90*math.cos(temp*9.4736842105),90*math.sin(temp*9.4736842105)), Point(90*math.cos(temp2*9.4736842105),90*math.sin(temp2*9.4736842105)))
+        # Fills in section color with corresponding values
         if x == 9:
             aLine.setFill("Dark Green")
         elif x == 28:
@@ -121,6 +125,7 @@ def createWheel():
 ############################
 #### Update Stat Labels ####
     
+# Will update the stat labels with the current percentages
 def updateLabels():
     t1 = "Odds:\n" + str(round((statOdd.display() / statTotal.display()), 4) * 100) + "%"
     oddL.setText(t1)
@@ -136,6 +141,7 @@ def updateLabels():
 #############################################
 ### DRAW POINTS ON WHEEL
 
+# Creates the individual points on the wheel
 numberList = ["21","6","18","31","19","8","12","29","25","10","27","00","1","13","36","24","3","15","34","22","5","17","32","20","7","11","30","26","9","28","0","2","14","35","23","4","16","23"]
 def createLabels():
     for x in range(38):
@@ -150,6 +156,7 @@ def createLabels():
 moneyLabel = Text(Point(500,135), "You Have: $")
 moneyDisplay = Text(Point(500,100), money)
 
+# Takes file value and displays it
 def displayInitialMoney():
     moneyLabel.setStyle("bold")
     moneyLabel.setFill("white")
@@ -158,7 +165,8 @@ def displayInitialMoney():
     moneyDisplay.setStyle("bold")
     moneyDisplay.setSize(36)
     moneyDisplay.draw(otherWin)
-    
+   
+# Gets new money and displays it
 def updateMoney():
     moneyDisplay.setText(money)
 
@@ -332,6 +340,7 @@ def spinBall():
                "ROW1", "ROW2", "ROW3", "00", "1to18", "19to36",
                "1to12", "13to24", "25to36", "EVEN", "ODD", "BLACK", "RED"]
         valid = False
+        # If the user entered a valid bet id, do this:
         for x in validId:
             if x == betId:
                 valid = True
@@ -356,6 +365,7 @@ def spinBall():
                 k = 0
                 final = 0
                 # SPEED OF BALL
+                # Ball gets slower as closer to end
                 for i in range(1,spinCount):
                     j = i/spinCount
                     if j >= .95:
@@ -379,6 +389,7 @@ def spinBall():
                         k = k - 38
                 ball.setFill("")
                 ball.setOutline("grey")
+                # Sets the winning number after spinning
                 winningNumber = numberList[k+20]
                 runBets(winningNumber, betAmount)
                 betBox.draw(otherWin)

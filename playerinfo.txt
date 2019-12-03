@@ -1,2 +1,1 @@
 DEFAULTMONEY, 1000
-justin, 995
