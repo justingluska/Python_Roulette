@@ -15,14 +15,6 @@ import time
 import random
 
 ############################
-### SET VARIABLES & ROWS ###
-username = ""
-money = 0
-winningNumber = 100
-a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
-b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
-c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
-############################
 #### STATISTICS OF GAME ####
 
 # (CLOD) - CLASS TO TRACK STAT/PCT%
@@ -49,7 +41,7 @@ statTotal = Stats(0.00)
 ############################
 # Draw the main labels between login, wheel, and bet
 
-def login():
+def login(moneyDisplay):
     # (GW) LOGIN SCREEN WINDOW
     loginScreen = GraphWin("Roulette Login", 400, 400)
     loginScreen.setCoords(0,0,400,300)
@@ -92,12 +84,12 @@ def login():
                     infile.close()
                     loginScreen.close()
                     nameEnter = True
-                    updateMoney()
+                    updateMoney(moneyDisplay)
 
 #################################
 ### CREATE ROULETTE WHEEL
                     
-def createWheel():
+def createWheel(wheel):
     rouletteCircle = Circle(Point(0,0), 90)
     rouletteCircle.draw(wheel)
     # Creates the 38 sections of a roulette wheel
@@ -143,7 +135,7 @@ def updateLabels():
 
 # Creates the individual points on the wheel
 numberList = ["21","6","18","31","19","8","12","29","25","10","27","00","1","13","36","24","3","15","34","22","5","17","32","20","7","11","30","26","9","28","0","2","14","35","23","4","16","23"]
-def createLabels():
+def createLabels(wheel):
     for x in range(38):
         temp = ((math.pi*x)/180)-5
         text = Text(Point((83*(math.cos(temp*9.4736842105))),(83*math.sin(temp*9.4736842105))), numberList[x])
@@ -151,13 +143,8 @@ def createLabels():
         text.setTextColor("white")
         text.draw(wheel)
 
-#############################################
-##### DISPLAY AMOUNT OF MONEY USER HAS ######
-moneyLabel = Text(Point(500,135), "You Have: $")
-moneyDisplay = Text(Point(500,100), money)
-
 # Takes file value and displays it
-def displayInitialMoney():
+def displayInitialMoney(moneyLabel, otherWin, moneyDisplay):
     moneyLabel.setStyle("bold")
     moneyLabel.setFill("white")
     moneyLabel.draw(otherWin)
@@ -167,7 +154,7 @@ def displayInitialMoney():
     moneyDisplay.draw(otherWin)
    
 # Gets new money and displays it
-def updateMoney():
+def updateMoney(moneyDisplay):
     moneyDisplay.setText(money)
 
 def updateMoneyFile():
@@ -219,13 +206,13 @@ def convertBetId(ID):
         
 ######################
 ### Lose Function ####
-def playerLost():
+def playerLost(console):
     console.setText("You Lost! Try again!")
     
 #####################
 ### Bet functions ###
     
-def runBets(winningNumber, betAmount):
+def runBets(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay):
     if betBox.getText().isdigit():
         betAmount = int(betBox.getText())
     else:
@@ -241,22 +228,22 @@ def runBets(winningNumber, betAmount):
         if int(winningNumber) == convertBetId(betId):
             money = money + (betAmount * 36)
         else:
-            playerLost()
+            playerLost(console)
     elif convertBetId(betId) == 41: # ROW 1 ID
         if int(winningNumber)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
-            playerLost()
+            playerLost(console)
     elif convertBetId(betId) == 42: # ROW 2 ID
         if (int(winningNumber)+1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
-            playerLost()
+            playerLost(console)
     elif convertBetId(betId) == 43: # ROW 3 ID
         if (int(winningNumber)-1)%3 == 0 and not winningNumber == "0" and not winningNumber == "00":
             money = money + (betAmount * 2)
         else:
-            playerLost()
+            playerLost(console)
     elif convertBetId(betId) == 44: # 1 to 12 ID
         array = [1,2,3,4,5,6,7,8,9,10,11,12]
         for x in array:
@@ -316,14 +303,14 @@ def runBets(winningNumber, betAmount):
             if x == int(winningNumber):
                 statRed.increase()
     statTotal.increase()
-    updateMoney()
+    updateMoney(moneyDisplay)
     updateLabels()
     
 #############################################
 ############### SPIN THE BALL ###############
     
 # (FNC) - CHECKS VALID PARAMETERS & SPINS THE BALL
-def spinBall():
+def spinBall(betBox, betIdBox, moneyDisplay, console, wheel):
     if betBox.getText().isdigit():
         betAmount = int(betBox.getText())
     else:
@@ -391,7 +378,7 @@ def spinBall():
                 ball.setOutline("grey")
                 # Sets the winning number after spinning
                 winningNumber = numberList[k+20]
-                runBets(winningNumber, betAmount)
+                runBets(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay)
                 betBox.draw(otherWin)
                 betIdBox.draw(otherWin)
                 winningNumberLabel = "Landed on: " + str(winningNumber)
@@ -425,7 +412,7 @@ def resetMoney():
 #############################################
 ######### DRAW BET WHEEL & SHAPES ###########
     
-def drawBettingWheel():
+def drawBettingWheel(otherWin, a12, b12, c12):
     for i in range(3):
         twoOne = Rectangle(Point(76.9230769231*12,700+(i*100)),Point(1000,800+(i*100)))
         twoText = Text(Point(960,750+(i*100)), "2:1")
@@ -485,7 +472,7 @@ def drawBettingWheel():
     nothing.setFill("black")
     nothing.draw(otherWin)
 #########
-def drawBottomRow():
+def drawBottomRow(otherWin):
     bottomValues = ["1-18", "EVEN", "", "0", "00", "", "ODD", "19-36"]
     for i in range(8):
         bottomRow = Rectangle(Point(115.3846153847*i,500), Point(115.3846153847*(i+1),600))
@@ -539,7 +526,7 @@ def drawBottomRow():
 #########################################
 ######## CREATE USER BUTTONS ############
     
-def createUserControls():
+def createUserControls(otherWin, betBox, betIdBox):
     # Behind Shadow
     spinButtonShadow = Rectangle(Point(708,67), Point(958,417))
     spinButtonShadow.setFill("Black")
@@ -575,7 +562,7 @@ def createUserControls():
 #################################
 ######## DRAW BET COLORS ########
     
-def drawBettingColors():
+def drawBettingColors(otherWin, a12, b12, c12):
     for i in a12:
         message = Text(Point((50+25*i)-77.5,950), i)
         message.setFill("white")
@@ -595,82 +582,95 @@ def drawBettingColors():
         message.setSize(18)
         message.draw(otherWin)
 
+def updateStatLabels(otherWin, wheel):
+    # (OTXT) - CONSOLE IS THE DISPLAY OF MESSAGES    
+    betId = 0
+    key = Text(Point(200,275), "BET IDS:\n TYPE ONE TO SELECT\n\n '#' (1-38)\n'0' or '00'\n 'ROW#' (1-3)\n'1to18'\nor '19to36'\n'1to12'\nor '13to24'\nor '25to36'\n'EVEN' or 'ODD'\n'BLACK' or 'RED'")
+    key.setSize(18)
+    key.setFill("white")
+    key.setFace("courier")
+    key.draw(otherWin)
+    oddL = Text(Point(-70,80), "Odds:\n0.00%")
+    oddL.draw(wheel)
+    oddL.setFill("white")
+    oddL.setStyle("bold")
+    oddL.setSize(19)
+    evenL = Text(Point(70,80), "Even:\n0.00%")
+    evenL.draw(wheel)
+    evenL.setFill("white")
+    evenL.setStyle("bold")
+    evenL.setSize(19)
+    redL = Text(Point(-80,-70), "Red:\n0.00%")
+    redL.draw(wheel)
+    redL.setOutline("crimson")
+    redL.setStyle("bold")
+    blackL = Text(Point(-80,-80), "Black\n0.00%")
+    blackL.draw(wheel)
+    blackL.setFill("black")
+    blackL.setStyle("bold")
+    greenL = Text(Point(70,-80), "Green\n0.00%")
+    greenL.draw(wheel)
+    greenL.setFill("Dark Green")
+    greenL.setStyle("bold")
+    greenL.setSize(19)
 #############################################    
 ##### PROGRAM RUN #####
+def main():
 
-login()
+    ############################
+    ### SET VARIABLES & ROWS ###
+    username = ""
+    money = 0
+    winningNumber = 100
+    a12 = [3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 33, 36, 100]
+    b12 = [2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 100]
+    c12 = [1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34, 100]
+    #############################################
+    ##### DISPLAY AMOUNT OF MONEY USER HAS ######
+    moneyLabel = Text(Point(500,135), "You Have: $")
+    moneyDisplay = Text(Point(500,100), money)
+    login(moneyDisplay)
+    ### SET WHEEL WINDOW CONDITIONS
+    wheel = GraphWin("Roulette Wheel", 750, 750)
+    wheel.setCoords(-90, -90, 90, 90)
+    wheel.setBackground("Steel Blue")
+    #############################################
+    ### CREATE BET CONTROL & COMMAND WINDOW
 
-### SET WHEEL WINDOW CONDITIONS
-wheel = GraphWin("Roulette Wheel", 750, 750)
-wheel.setCoords(-90, -90, 90, 90)
-wheel.setBackground("Steel Blue")
-#############################################
-### CREATE BET CONTROL & COMMAND WINDOW
+    otherWin = GraphWin("Bet Controls", 750, 750) #750
+    otherWin.setBackground("Teal")
+    otherWin.setCoords(0,0,1000,1000)
 
-otherWin = GraphWin("Bet Controls", 750, 750) #750
-otherWin.setBackground("Teal")
-otherWin.setCoords(0,0,1000,1000)
+    # (IEB) - ENTER BET ID & BET AMOUNT
+    betBox = Entry(Point(500,350), 15)
+    betIdBox = Entry(Point(500,250), 15)
+    console = Text(Point(0,0), "Set Bet ID & Money then Spin!")
+    console.setStyle("bold")
+    console.setSize(24)
+    console.setFill("Lavender")
+    console.draw(wheel)    
+    createUserControls(otherWin, betBox, betIdBox)
+    createWheel(wheel)
+    createLabels(wheel)
+    displayInitialMoney(moneyLabel, otherWin, moneyDisplay)
+    drawBettingWheel(otherWin, a12, b12, c12)
+    drawBottomRow(otherWin)
+    drawBettingColors(otherWin, a12, b12, c12)
 
-# (IEB) - ENTER BET ID & BET AMOUNT
-betBox = Entry(Point(500,350), 15)
-betIdBox = Entry(Point(500,250), 15)
+    #############################################
+    ############ MAKE BETTING WINDOW ############
 
-createUserControls()
-createWheel()
-createLabels()
-displayInitialMoney()
-drawBettingWheel()
-drawBottomRow()
-drawBettingColors()
-
-#############################################
-############ MAKE BETTING WINDOW ############
-
-splitter = Line(Point(0,500), Point(1000,500))
-splitter.draw(otherWin)
-# (OTXT) - CONSOLE IS THE DISPLAY OF MESSAGES
-console = Text(Point(0,0), "Set Bet ID & Money then Spin!")
-console.setStyle("bold")
-console.setSize(24)
-console.setFill("Lavender")
-console.draw(wheel)        
-betId = 0
-key = Text(Point(200,275), "BET IDS:\n TYPE ONE TO SELECT\n\n '#' (1-38)\n'0' or '00'\n 'ROW#' (1-3)\n'1to18'\nor '19to36'\n'1to12'\nor '13to24'\nor '25to36'\n'EVEN' or 'ODD'\n'BLACK' or 'RED'")
-key.setSize(18)
-key.setFill("white")
-key.setFace("courier")
-key.draw(otherWin)
-oddL = Text(Point(-70,80), "Odds:\n0.00%")
-oddL.draw(wheel)
-oddL.setFill("white")
-oddL.setStyle("bold")
-oddL.setSize(19)
-evenL = Text(Point(70,80), "Even:\n0.00%")
-evenL.draw(wheel)
-evenL.setFill("white")
-evenL.setStyle("bold")
-evenL.setSize(19)
-redL = Text(Point(-80,-70), "Red:\n0.00%")
-redL.draw(wheel)
-redL.setOutline("crimson")
-redL.setStyle("bold")
-blackL = Text(Point(-80,-80), "Black\n0.00%")
-blackL.draw(wheel)
-blackL.setFill("black")
-blackL.setStyle("bold")
-greenL = Text(Point(70,-80), "Green\n0.00%")
-greenL.draw(wheel)
-greenL.setFill("Dark Green")
-greenL.setStyle("bold")
-greenL.setSize(19)
-
-########################################
-############# BET W MONEY ##############
-while True:
-    # (IMS) - CHECKS IF VALID BUTTON CLICK (IN SPIN BTN)
-    click = otherWin.getMouse()
-    x = click.getX()
-    y = click.getY()
-    if x >= 700 and x <= 950:
-        if y >= 75 and y <= 425:
-            spinBall()
+    splitter = Line(Point(0,500), Point(1000,500))
+    splitter.draw(otherWin)
+    updateStatLabels(otherWin, wheel)
+    ########################################
+    ############# BET W MONEY ##############
+    while True:
+        # (IMS) - CHECKS IF VALID BUTTON CLICK (IN SPIN BTN)
+        click = otherWin.getMouse()
+        x = click.getX()
+        y = click.getY()
+        if x >= 700 and x <= 950:
+            if y >= 75 and y <= 425:
+                spinBall(betBox, betIdBox, moneyDisplay, console, wheel)
+main()
