@@ -272,6 +272,10 @@ def runBets(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay):
                 money = money + (betAmount * 2)
     else:
         console.setText("Error! Please enter a valid Bet ID")
+    ##### Cannot make this shorter ^ #####
+    didTheyWin(winningNumber, moneyDisplay)
+
+def didTheyWin(winningNumber, moneyDisplay):
     if int(winningNumber) % 2 == 0 and not winningNumber == "0" and not winningNumber == "00":
         statEven.increase()
     if int(winningNumber) % 2 == 1:
@@ -289,7 +293,6 @@ def runBets(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay):
                 statRed.increase()
     statTotal.increase()
     updateMoney(moneyDisplay)
-    
 #############################################
 ############### SPIN THE BALL ###############
     
