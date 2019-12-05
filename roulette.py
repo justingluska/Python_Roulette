@@ -203,14 +203,15 @@ def runBets(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay):
         console.setText("Invalid Bet Amount. Set to $1")
     betId = betIdBox.getText()
     global money
-    runBets1(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId)
-    runBets2(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId)
+    money = runBets1(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId, money)
+    money = runBets2(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId, money)
     didTheyWin(winningNumber, moneyDisplay)
+    updateMoney(moneyDisplay)
     
 #########################
 ### First half of betId's
     
-def runBets1(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId):
+def runBets1(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId, money):
     if 1 <= convertBetId(betId) <= 36: # Single Digit 1-36 ID
         if int(winningNumber) == convertBetId(betId):
             money = money + (betAmount * 36)
@@ -246,11 +247,13 @@ def runBets1(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, 
         for x in array:
             if x == int(winningNumber):
                 money = money + (betAmount * 3)
+    updateMoney(moneyDisplay)
+    return money
  
 #########################
 ## Second half of betId's
                 
-def runBets2(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId):
+def runBets2(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, betId, money):
     if convertBetId(betId) == 47: # 1 to 18 ID
         array = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18]
         for x in array:
@@ -279,6 +282,8 @@ def runBets2(winningNumber, betAmount, betBox, betIdBox, console, moneyDisplay, 
                 money = money + (betAmount * 2)
     else:
         console.setText("Error! Please enter a valid Bet ID")
+    updateMoney(moneyDisplay)
+    return money
         
 ############################
 #### CHECK IF PLAYER WINS BET
