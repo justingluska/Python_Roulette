@@ -123,3 +123,5 @@ dmypy.json
 .pyre/
 playerinfo.txt
 playerinfo.txt
+playerinfo.txt
+*.txt
